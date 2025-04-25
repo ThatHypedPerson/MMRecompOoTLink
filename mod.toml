@@ -15,14 +15,13 @@ display_name = "MM OoT Link"
 
 # The description that will show up when this mod is displayed in the mod menu. This should be human readable.
 description =  """
-This is an example mod for Majora's Mask: Recompiled that can be used as a template for creating mods. \
-When this mod is enabled, you will always perform a quickspin when swinging your sword.
+This lets you change Link to be his Ocarina of Time counterpart.
 
-For more details, see https://github.com/Zelda64Recomp/MMRecompModTemplate."""
+You are also able to change into adult OoT Link."""
 
 # A short description that will show up in this mod's entry in the mod list. This should be human readable and kept short
 # to prevent it from being cut off due to the limited space.
-short_description = "Always perform a quickspin when swinging your sword."
+short_description = "Change which Link you're playing as."
 
 # Authors of this mod.
 authors = [ "Hyped (ThatHypedPerson)" ]
