@@ -2,6 +2,7 @@
 #include "z64.h"
 #include "macros.h"
 #include "object_link_child.h"
+#include "gameplay_keep.h"
 
 static Vtx gLinkChildVtx_019E08[35];
 static Vtx gLinkChildVtx_01A428[39];
@@ -84,46 +85,6 @@ u64 gLinkChildUnusedTLUT[] = {
 
 u64 gLinkChildUnused1Tex[] = {
 #include "object_link_child/unused_1.ci8.inc.c"
-};
-
-u64 gHilite1Tex[] = {
-#include "gameplay_keep/hilite_1.rgba16.inc.c"
-};
-
-u64 gHilite2Tex[] = {
-#include "gameplay_keep/hilite_2.rgba16.inc.c"
-};
-
-u64 gHylianShieldDesignTex[] = {
-#include "gameplay_keep/hylian_shield_design.rgba16.inc.c"
-};
-
-u64 gOcarinaofTimeDesignTex[] = {
-#include "gameplay_keep/ocarina_of_time_design.rgba16.inc.c"
-};
-
-u64 gBottleGlassTex[] = {
-#include "gameplay_keep/bottle_glass.rgba16.inc.c"
-};
-
-u64 gDekuStickTex[] = {
-#include "gameplay_keep/deku_stick.i8.inc.c"
-};
-
-u64 gLinkHairTex[] = {
-#include "gameplay_keep/link_hair.rgba16.inc.c"
-};
-
-u64 gLinkTunic1Tex[] = {
-#include "gameplay_keep/link_tunic_1.i8.inc.c"
-};
-
-u64 gLinkTunic2Tex[] = {
-#include "gameplay_keep/link_tunic_2.i8.inc.c"
-};
-
-u64 gLinkTunic3Tex[] = {
-#include "gameplay_keep/link_tunic_3.i8.inc.c"
 };
 
 u64 gLinkChildUnused2Tex[] = {
@@ -4320,12 +4281,4 @@ void* gLinkChildSkelLimbs[] = {
 
 FlexSkeletonHeader gLinkChildSkel = { 
     { gLinkChildSkelLimbs, ARRAY_COUNT(gLinkChildSkelLimbs) }, 18
-};
-
-extern Gfx gLinkHumanGreatFairysSwordDL[];
-
-// custom Dls
-Gfx gLinkChildLeftHandHoldingGreatFairysSwordDL[] = {
-    gsSPDisplayList(gLinkChildLeftFistNearDL),
-    gsSPBranchList(gLinkHumanGreatFairysSwordDL),
 };

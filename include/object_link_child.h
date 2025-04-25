@@ -188,7 +188,4 @@ extern LodLimb gLinkChildTorsoLimb;
 extern void* gLinkChildSkelLimbs[];
 extern FlexSkeletonHeader gLinkChildSkel;
 
-// custom DLs
-extern Gfx gLinkChildLeftHandHoldingGreatFairysSwordDL[];
-
 #endif
