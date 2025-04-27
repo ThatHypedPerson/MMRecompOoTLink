@@ -11,6 +11,7 @@ RECOMP_IMPORT("*", int recomp_printf(const char* fmt, ...));
 typedef enum {
     LINK_TYPE_CHILD,
     LINK_TYPE_ADULT,
+    LINK_TYPE_VANILLA,
 } LinkType;
 
 extern Gfx* gPlayerWaistDLs[2 * PLAYER_FORM_MAX];
@@ -59,6 +60,15 @@ extern Gfx* sPlayerFirstPersonRightHandHookshotDLs[PLAYER_FORM_MAX];
 // sPlayerFirstPersonRightHandDLs
 // sPlayerFirstPersonRightHandHookshotDLs
 
+extern u64 gLinkHumanEyesOpenTex[];
+extern u64 gLinkHumanEyesHalfTex[];
+extern u64 gLinkHumanEyesClosedTex[];
+extern u64 gLinkHumanEyesRollRightTex[];
+extern u64 gLinkHumanEyesRollLeftTex[];
+extern u64 gLinkHumanEyesRollUpTex[];
+extern u64 gLinkHumanEyesRollDownTex[];
+extern u64 object_link_child_Tex_003800[];
+
 // note: these are flipped from oot decomp
 void* sEyeTextures[][PLAYER_EYES_MAX] = {
     {
@@ -81,7 +91,22 @@ void* sEyeTextures[][PLAYER_EYES_MAX] = {
         gLinkAdultEyesDownTex,    // PLAYER_EYES_DOWN
         gLinkAdultEyesWincingTex, // PLAYER_EYES_WINCING
     },
+    {
+        gLinkHumanEyesOpenTex,
+        gLinkHumanEyesHalfTex,
+        gLinkHumanEyesClosedTex,
+        gLinkHumanEyesRollRightTex,
+        gLinkHumanEyesRollLeftTex,
+        gLinkHumanEyesRollUpTex,
+        gLinkHumanEyesRollDownTex,
+        object_link_child_Tex_003800,
+    },
 };
+
+extern u64 gLinkHumanMouthClosedTex[];
+extern u64 gLinkHumanMouthTeethTex[];
+extern u64 gLinkHumanMouthAngryTex[];
+extern u64 gLinkHumanMouthHappyTex[];
 
 void* sMouthTextures[][PLAYER_MOUTH_MAX] = {
     {
@@ -95,6 +120,12 @@ void* sMouthTextures[][PLAYER_MOUTH_MAX] = {
         gLinkAdultMouthHalfTex,   // PLAYER_MOUTH_HALF
         gLinkAdultMouthOpenTex,   // PLAYER_MOUTH_OPEN
         gLinkAdultMouthSmileTex,  // PLAYER_MOUTH_SMILE
+    },
+    {
+        gLinkHumanMouthClosedTex, // PLAYER_MOUTH_CLOSED
+        gLinkHumanMouthTeethTex,   // PLAYER_MOUTH_HALF
+        gLinkHumanMouthAngryTex,   // PLAYER_MOUTH_OPEN
+        gLinkHumanMouthHappyTex,  // PLAYER_MOUTH_SMILE
     },
 };
 
@@ -160,6 +191,7 @@ void setSavedAgeProperties(Actor* thisx, PlayState* play) {
     if (savedAgeProperties[type].ceilingCheckHeight == 0) {
         switch (type) {
             case LINK_TYPE_CHILD:
+            case LINK_TYPE_VANILLA:
                 savedAgeProperties[LINK_TYPE_CHILD] = sPlayerAgeProperties[PLAYER_FORM_HUMAN];
                 break;
             case LINK_TYPE_ADULT:
@@ -185,6 +217,25 @@ void setSavedAgeProperties(Actor* thisx, PlayState* play) {
 
     updateLink(play);
 }
+
+extern FlexSkeletonHeader gLinkHumanSkel;
+
+extern Gfx gLinkHumanWaistDL[];
+extern Gfx gLinkHumanRightHandOpenDL[];
+extern Gfx gLinkHumanRightHandClosedDL[];
+extern Gfx gLinkHumanRightHandHoldingBowDL[];
+extern Gfx gLinkHumanRightHandHoldingOcarinaDL[];
+extern Gfx gLinkHumanRightHandHoldingHookshotDL[];
+extern Gfx gLinkHumanLeftHandOpenDL[];
+extern Gfx gLinkHumanLeftHandClosedDL[];
+extern Gfx gLinkHumanLeftHandHoldingGreatFairysSwordDL[];
+extern Gfx gLinkHumanLeftHandHoldingKokiriSwordDL[];
+extern Gfx gLinkHumanLeftHandHoldBottleDL[];
+extern Gfx gLinkHumanRightHandHoldingHerosShieldDL[];
+extern Gfx gLinkHumanRightHandHoldingMirrorShieldDL[];
+extern Gfx gLinkHumanLeftHandHoldingKokiriSwordDL[];
+extern Gfx gLinkHumanLeftHandHoldingRazorSwordDL[];
+extern Gfx gLinkHumanLeftHandHoldingGildedSwordDL[];
 
 void updateLink(PlayState* play) {
     Player* player = GET_PLAYER(play);
@@ -295,12 +346,59 @@ void updateLink(PlayState* play) {
             D_801C018C[(EQUIP_VALUE_SWORD_GILDED - 1) * 2 + 0] = gLinkAdultLeftHandHoldingGildedSwordDL;
             D_801C018C[(EQUIP_VALUE_SWORD_GILDED - 1) * 2 + 1] = gLinkAdultLeftHandHoldingGildedSwordDL;
             break;
+        case LINK_TYPE_VANILLA:
+            if (recomp_get_config_u32("fix_color")) {
+                gPlayerSkeletons[PLAYER_FORM_HUMAN] = &gLinkHumanSkel;
+                
+                gPlayerWaistDLs[PLAYER_FORM_HUMAN * 2 + 0] = gLinkHumanWaistDL;
+                gPlayerWaistDLs[PLAYER_FORM_HUMAN * 2 + 1] = gLinkHumanWaistDL;
+            }
+
+            gPlayerRightHandOpenDLs[PLAYER_FORM_HUMAN * 2 + 0] = gLinkHumanRightHandOpenDL;
+            gPlayerRightHandOpenDLs[PLAYER_FORM_HUMAN * 2 + 1] = gLinkHumanRightHandOpenDL;
+            gPlayerRightHandClosedDLs[PLAYER_FORM_HUMAN * 2 + 0] = gLinkHumanRightHandClosedDL;
+            gPlayerRightHandClosedDLs[PLAYER_FORM_HUMAN * 2 + 1] = gLinkHumanRightHandClosedDL;
+            gPlayerRightHandBowDLs[PLAYER_FORM_HUMAN * 2 + 0] = gLinkHumanRightHandHoldingBowDL;
+            gPlayerRightHandBowDLs[PLAYER_FORM_HUMAN * 2 + 1] = gLinkHumanRightHandHoldingBowDL;
+            
+            gPlayerRightHandInstrumentDLs[PLAYER_FORM_HUMAN * 2 + 0] = gLinkHumanRightHandHoldingOcarinaDL;
+            gPlayerRightHandInstrumentDLs[PLAYER_FORM_HUMAN * 2 + 1] = gLinkHumanRightHandHoldingOcarinaDL;
+            gPlayerRightHandHookshotDLs[PLAYER_FORM_HUMAN * 2 + 0] = gLinkHumanRightHandHoldingHookshotDL;
+            gPlayerRightHandHookshotDLs[PLAYER_FORM_HUMAN * 2 + 1] = gLinkHumanRightHandHoldingHookshotDL;
+            
+            gPlayerLeftHandOpenDLs[PLAYER_FORM_HUMAN * 2 + 0] = gLinkHumanLeftHandOpenDL;
+            gPlayerLeftHandOpenDLs[PLAYER_FORM_HUMAN * 2 + 1] = gLinkHumanLeftHandOpenDL;
+            gPlayerLeftHandClosedDLs[PLAYER_FORM_HUMAN * 2 + 0] = gLinkHumanLeftHandClosedDL;
+            gPlayerLeftHandClosedDLs[PLAYER_FORM_HUMAN * 2 + 1] = gLinkHumanLeftHandClosedDL;
+            
+            gPlayerLeftHandTwoHandSwordDLs[PLAYER_FORM_HUMAN * 2 + 0] = gLinkHumanLeftHandHoldingGreatFairysSwordDL;
+            gPlayerLeftHandTwoHandSwordDLs[PLAYER_FORM_HUMAN * 2 + 1] = gLinkHumanLeftHandHoldingGreatFairysSwordDL;
+            gPlayerLeftHandOneHandSwordDLs[PLAYER_FORM_HUMAN * 2 + 0] = gLinkHumanLeftHandHoldingKokiriSwordDL;
+            gPlayerLeftHandOneHandSwordDLs[PLAYER_FORM_HUMAN * 2 + 1] = gLinkHumanLeftHandHoldingKokiriSwordDL;
+            gPlayerLeftHandBottleDLs[PLAYER_FORM_HUMAN * 2 + 0] = gLinkHumanLeftHandHoldBottleDL;
+            gPlayerLeftHandBottleDLs[PLAYER_FORM_HUMAN * 2 + 1] = gLinkHumanLeftHandHoldBottleDL;
+            
+            gPlayerHandHoldingShields[(PLAYER_SHIELD_HEROS_SHIELD - 1) * 2 + 0] = gLinkHumanRightHandHoldingHerosShieldDL;
+            gPlayerHandHoldingShields[(PLAYER_SHIELD_HEROS_SHIELD - 1) * 2 + 1] = gLinkHumanRightHandHoldingHerosShieldDL;
+            gPlayerHandHoldingShields[(PLAYER_SHIELD_MIRROR_SHIELD - 1) * 2 + 0] = gLinkHumanRightHandHoldingMirrorShieldDL;
+            gPlayerHandHoldingShields[(PLAYER_SHIELD_MIRROR_SHIELD - 1) * 2 + 1] = gLinkHumanRightHandHoldingMirrorShieldDL;
+
+            D_801C018C[(EQUIP_VALUE_SWORD_KOKIRI - 1) * 2 + 0] = gLinkHumanLeftHandHoldingKokiriSwordDL;
+            D_801C018C[(EQUIP_VALUE_SWORD_KOKIRI - 1) * 2 + 1] = gLinkHumanLeftHandHoldingKokiriSwordDL;
+            D_801C018C[(EQUIP_VALUE_SWORD_RAZOR - 1) * 2 + 0] = gLinkHumanLeftHandHoldingRazorSwordDL;
+            D_801C018C[(EQUIP_VALUE_SWORD_RAZOR - 1) * 2 + 1] = gLinkHumanLeftHandHoldingRazorSwordDL;
+            D_801C018C[(EQUIP_VALUE_SWORD_GILDED - 1) * 2 + 0] = gLinkHumanLeftHandHoldingGildedSwordDL;
+            D_801C018C[(EQUIP_VALUE_SWORD_GILDED - 1) * 2 + 1] = gLinkHumanLeftHandHoldingGildedSwordDL;
+
+            sPlayerAgeProperties[PLAYER_FORM_HUMAN] = savedAgeProperties[LINK_TYPE_CHILD];
+            player->ageProperties = &savedAgeProperties[LINK_TYPE_CHILD];
+            break;
     }
 
     switch (player->transformation) {
         case PLAYER_FORM_HUMAN:
-            sPlayerAgeProperties[PLAYER_FORM_HUMAN] = savedAgeProperties[type];
-            player->ageProperties = &savedAgeProperties[type];
+            sPlayerAgeProperties[PLAYER_FORM_HUMAN] = savedAgeProperties[type & 1];
+            player->ageProperties = &savedAgeProperties[type & 1];
             for (int i = 0; i < PLAYER_MOUTH_MAX; i++) {
                 sPlayerMouthTextures[i] = sMouthTextures[type][i];
             }
@@ -378,7 +476,7 @@ RECOMP_PATCH f32 Player_GetHeight(Player* player) {
             return extraHeight + 36.0f;
 
         case PLAYER_FORM_HUMAN:
-            if (recomp_get_config_u32("link_type")) {
+            if (recomp_get_config_u32("link_type") == LINK_TYPE_ADULT) {
                 return extraHeight + 68.0f;
             }
             return extraHeight + 44.0f;
