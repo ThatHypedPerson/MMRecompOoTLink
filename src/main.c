@@ -150,10 +150,12 @@ TexturePtr sZoraMouthTextures[PLAYER_MOUTH_MAX] = {
 extern PlayerAgeProperties sPlayerAgeProperties[PLAYER_FORM_MAX];
 static PlayerAgeProperties savedAgeProperties[2];
 
-RECOMP_HOOK("Player_Init") void on_Player_Init(Actor* thisx, PlayState* play) {
+void updateLink(PlayState* play);
+
+RECOMP_HOOK("Player_Init")
+void setSavedAgeProperties(Actor* thisx, PlayState* play) {
     LinkType type = recomp_get_config_u32("link_type");
     PlayerAgeProperties adultProperties;
-    Player* player = GET_PLAYER(play);
     
     if (savedAgeProperties[type].ceilingCheckHeight == 0) {
         switch (type) {
@@ -180,16 +182,12 @@ RECOMP_HOOK("Player_Init") void on_Player_Init(Actor* thisx, PlayState* play) {
                 break;
         }
     }
+
+    updateLink(play);
 }
 
 void updateLink(PlayState* play) {
     Player* player = GET_PLAYER(play);
-    
-    if (recomp_get_config_u32("fix_color") && player->transformation == PLAYER_FORM_HUMAN) {
-        OPEN_DISPS(play->state.gfxCtx);
-        gDPSetEnvColor(POLY_OPA_DISP++, 30, 105, 27, 0);
-        CLOSE_DISPS(play->state.gfxCtx);
-    }
 
     LinkType type = recomp_get_config_u32("link_type");
 
@@ -326,19 +324,34 @@ void updateLink(PlayState* play) {
     }
 }
 
+RECOMP_CALLBACK("*", recomp_on_play_main)
+void mainUpdate(PlayState* play) {
+    updateLink(play);
+}
+
+void fixLinkColor(PlayState* play) {
+    Player* player = GET_PLAYER(play);
+    
+    if (recomp_get_config_u32("fix_color") && player->transformation == PLAYER_FORM_HUMAN) {
+        OPEN_DISPS(play->state.gfxCtx);
+        gDPSetEnvColor(POLY_OPA_DISP++, 30, 105, 27, 0);
+        CLOSE_DISPS(play->state.gfxCtx);
+    }
+}
+
 s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, Actor* thisx);
 void func_80125CE0(Player* player, struct_80124618* arg1, Vec3f* pos, Vec3s* rot);
 
 RECOMP_HOOK("Player_OverrideLimbDrawGameplayDefault")
 void Recolor_OverrideLimbDrawDefault(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, Actor* actor) {
     Player* player = (Player*)actor;
-    updateLink(play);
+    fixLinkColor(play);
 }
 
 RECOMP_HOOK("Player_OverrideLimbDrawGameplayFirstPerson")
 void Recolor_OverrideLimbDrawFirstPerson(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, Actor* actor) {
     Player* player = (Player*)actor;
-    updateLink(play);
+    fixLinkColor(play);
 }
 
 RECOMP_PATCH f32 Player_GetHeight(Player* player) {
