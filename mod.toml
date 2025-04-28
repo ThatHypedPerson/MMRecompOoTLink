@@ -69,7 +69,7 @@ Change which Link you're playing as.
 This will only fully update once you reload your player.
 """
 type = "Enum"
-options = [ "Child", "Adult" ]
+options = [ "Child", "Adult", "Vanilla" ]
 default = "Child"
 
 [[manifest.config_options]]
