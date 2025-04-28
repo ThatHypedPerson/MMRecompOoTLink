@@ -69,6 +69,11 @@ extern u64 gLinkHumanEyesRollUpTex[];
 extern u64 gLinkHumanEyesRollDownTex[];
 extern u64 object_link_child_Tex_003800[];
 
+// animations
+extern PlayerAnimationHeader* D_8085BE84[PLAYER_ANIMGROUP_MAX][PLAYER_ANIMTYPE_MAX];
+extern LinkAnimationHeader gPlayerAnim_clink_demo_doorA_link;
+extern LinkAnimationHeader gPlayerAnim_clink_demo_doorB_link;
+
 // note: these are flipped from oot decomp
 void* sEyeTextures[][PLAYER_EYES_MAX] = {
     {
@@ -293,8 +298,12 @@ void updateLink(PlayState* play) {
             D_801C018C[(EQUIP_VALUE_SWORD_GILDED - 1) * 2 + 0] = gLinkChildLeftHandHoldingGildedSwordDL;
             D_801C018C[(EQUIP_VALUE_SWORD_GILDED - 1) * 2 + 1] = gLinkChildLeftHandHoldingGildedSwordDL;
 
-            sPlayerAgeProperties[PLAYER_FORM_HUMAN] = savedAgeProperties[LINK_TYPE_CHILD];
-            player->ageProperties = &savedAgeProperties[LINK_TYPE_CHILD];
+            // animations
+            for (int i = 0; i < PLAYER_ANIMTYPE_MAX; i++) {
+                D_8085BE84[PLAYER_ANIMGROUP_doorA][i] = &gPlayerAnim_clink_demo_doorA_link;
+                D_8085BE84[PLAYER_ANIMGROUP_doorB][i] = &gPlayerAnim_clink_demo_doorB_link;
+            }
+
             break;
         case LINK_TYPE_ADULT:
             gPlayerSkeletons[PLAYER_FORM_HUMAN] = &gLinkAdultSkel;
@@ -345,6 +354,12 @@ void updateLink(PlayState* play) {
             D_801C018C[(EQUIP_VALUE_SWORD_RAZOR - 1) * 2 + 1] = gLinkAdultLeftHandHoldingRazorSwordDL;
             D_801C018C[(EQUIP_VALUE_SWORD_GILDED - 1) * 2 + 0] = gLinkAdultLeftHandHoldingGildedSwordDL;
             D_801C018C[(EQUIP_VALUE_SWORD_GILDED - 1) * 2 + 1] = gLinkAdultLeftHandHoldingGildedSwordDL;
+            
+            for (int i = 0; i < PLAYER_ANIMTYPE_MAX; i++) {
+                D_8085BE84[PLAYER_ANIMGROUP_doorA][i] = D_8085BE84[PLAYER_ANIMGROUP_doorA_free][i];
+                D_8085BE84[PLAYER_ANIMGROUP_doorB][i] = D_8085BE84[PLAYER_ANIMGROUP_doorB_free][i];
+            }
+
             break;
         case LINK_TYPE_VANILLA:
             if (recomp_get_config_u32("fix_color")) {
@@ -389,9 +404,13 @@ void updateLink(PlayState* play) {
             D_801C018C[(EQUIP_VALUE_SWORD_RAZOR - 1) * 2 + 1] = gLinkHumanLeftHandHoldingRazorSwordDL;
             D_801C018C[(EQUIP_VALUE_SWORD_GILDED - 1) * 2 + 0] = gLinkHumanLeftHandHoldingGildedSwordDL;
             D_801C018C[(EQUIP_VALUE_SWORD_GILDED - 1) * 2 + 1] = gLinkHumanLeftHandHoldingGildedSwordDL;
-
-            sPlayerAgeProperties[PLAYER_FORM_HUMAN] = savedAgeProperties[LINK_TYPE_CHILD];
-            player->ageProperties = &savedAgeProperties[LINK_TYPE_CHILD];
+            
+            // animations
+            for (int i = 0; i < PLAYER_ANIMTYPE_MAX; i++) {
+                D_8085BE84[PLAYER_ANIMGROUP_doorA][i] = &gPlayerAnim_clink_demo_doorA_link;
+                D_8085BE84[PLAYER_ANIMGROUP_doorB][i] = &gPlayerAnim_clink_demo_doorB_link;
+            }
+            
             break;
     }
 
