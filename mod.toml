@@ -8,7 +8,7 @@
 id = "mm_recomp_oot_link_replacement"
 
 # Version of this mod.
-version = "0.2.0"
+version = "0.4.0"
 
 # The name that will show up for this mod in the mod menu. This should be human readable.
 display_name = "MM OoT Link"
@@ -21,10 +21,10 @@ You are also able to change into adult OoT Link."""
 
 # A short description that will show up in this mod's entry in the mod list. This should be human readable and kept short
 # to prevent it from being cut off due to the limited space.
-short_description = "Change which Link you're playing as."
+short_description = "Change Link to be his Ocarina of Time counterpart."
 
 # Authors of this mod.
-authors = [ "Hyped (ThatHypedPerson)" ]
+authors = [ "Hyped (ThatHypedPerson)", "LittleCube" ]
 
 # ID of the target recomp game.
 game_id = "mm"
@@ -58,7 +58,7 @@ func_reference_syms_file = "Zelda64RecompSyms/mm.us.rev1.syms.toml"
 data_reference_syms_files = [ "Zelda64RecompSyms/mm.us.rev1.datasyms.toml", "Zelda64RecompSyms/mm.us.rev1.datasyms_static.toml" ]
 
 # Additional files to include in the mod.
-additional_files = [ ]
+additional_files = [ "thumb.dds" ]
 
 [[manifest.config_options]]
 id = "link_type"
