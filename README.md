@@ -4,7 +4,7 @@ This is a mod for Majora's Mask: Recompiled that lets you change Link to be his 
 
 You can choose to be either child or adult Link from OoT, or switch back to the orginal MM Link if desired.
 <br/>**(You need to reload the current scene for this to take effect.)**
-![triple link](thunderstore/images/triple_baka.png)
+![triple link](images/triple_baka.png)
 
 There is also an option named `Fix Color`, only disable this if you are using another mod which alters tunic colors.
 
